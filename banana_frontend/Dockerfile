@@ -5,13 +5,13 @@ FROM node:10.9.0-slim
 WORKDIR /app
 
 # Copy package.json and package-lock.json first to leverage Docker cache
-COPY ./banana_frontend/package*.json ./
+COPY ./package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY ./banana_frontend .
+COPY ./ .
 
 # Build the Svelte application for production
 RUN npm run build
