@@ -17,7 +17,7 @@ COPY ./banana_frontend .
 RUN npm run build
 
 # Expose the port that the app will run on
-EXPOSE 80
+EXPOSE 5000
 
 # Start the app using the static server
 CMD ["npm", "run", "dev"]
