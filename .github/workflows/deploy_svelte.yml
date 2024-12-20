@@ -6,12 +6,32 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '10.9.0'
+
+      - name: Install dependencies
+        run: |
+          cd ./banana_frontend
+          npm install
+
+      #- name: Build the Svelte app
+      #  run: |
+      #    cd ./banana_frontend
+      #    npm run build
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t jansuklje/banana-frontend:latest -f ./banana_frontend/Dockerfile ./banana_frontend
+          docker push jansuklje/banana-frontend:latest
 
       - name: Set up SSH key
         uses: webfactory/ssh-agent@v0.5.3
@@ -20,4 +40,5 @@ jobs:
 
       - name: Run deploy script on local server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'bash /home/user/deploy_svelte.sh'
+          ssh -tt -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
+            'sudo bash /home/user/dockers/deploy_svelte.sh'
