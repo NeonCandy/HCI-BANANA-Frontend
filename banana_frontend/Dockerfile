@@ -19,5 +19,6 @@ COPY --from=build /app/package.json .
 COPY --from=build /app/build build
 
 ENV PORT=5000
+ENV NODE_ENV=production
 EXPOSE 5000
 CMD pnpm run db:push && node build
