@@ -1,15 +1,6 @@
-FROM node:18-slim
-
+FROM node:23-slim
 WORKDIR /app
-
-COPY ./package*.json ./
-
-RUN npm install stylus sugarss terser tsx yaml picomatch
-
 COPY ./ .
-
-# RUN npm run build
-
+RUN rm -f .env local.db && npm install -D && DATABASE_PATH=local.db npm run build && rm -f local.db
 EXPOSE 5000
-
-CMD ["npm", "run", "dev"]
+CMD npm run db:push && npm run host
