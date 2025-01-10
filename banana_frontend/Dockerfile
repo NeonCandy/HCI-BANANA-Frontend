@@ -2,7 +2,7 @@ FROM node:23-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
-COPY --exclude=node_modules --exclude=build --exclude=.svelte-kit --exclude=.env --exclude=local.db ./ .
+COPY ./ .
 RUN corepack enable && corepack install
 
 FROM base AS prod-deps
