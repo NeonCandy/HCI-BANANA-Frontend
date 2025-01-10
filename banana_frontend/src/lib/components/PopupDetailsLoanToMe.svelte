@@ -9,7 +9,7 @@
     import { Button } from "$lib/shadcn/components/ui/button";
     import * as Dialog from "$lib/shadcn/components/ui/dialog";
     import { mutation } from "$lib/utils.svelte";
-    import { Check, X } from "lucide-svelte";
+    import { ArrowUpToLine, X } from "lucide-svelte";
 
     let {
         open = $bindable(false),
@@ -144,7 +144,7 @@
                         mutValuePaid.value = loan._payment.value;
                     }}
                 >
-                    <AppIcon icon={mutValuePaid.stalled ? X : Check} class="!size-6" />
+                    <AppIcon icon={mutValuePaid.stalled ? X : ArrowUpToLine} class="!size-6" />
                 </Button>
             </div>
         {/if}
