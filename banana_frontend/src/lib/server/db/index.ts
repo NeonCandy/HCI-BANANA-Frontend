@@ -2,10 +2,18 @@ import { env } from "$env/dynamic/private";
 import * as t from "$lib/server/db/schema";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
+import fs from "node:fs";
 
-if (!env.DATABASE_PATH) throw new Error("DATABASE_PATH is not set");
+const databasePath = (() => {
+    if (env.DATABASE_PATH) return env.DATABASE_PATH;
+    try {
+        return fs.readFileSync("env_DATABASE_PATH", "utf8");
+    } catch {
+        throw new Error("DATABASE_PATH is not set");
+    }
+})();
 
-const client = new Database(env.DATABASE_PATH);
+const client = new Database(databasePath);
 
 export const db = drizzle(client, { schema: t });
 export * as t from "$lib/server/db/schema";
