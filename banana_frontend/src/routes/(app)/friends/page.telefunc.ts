@@ -2,7 +2,7 @@ import { validateUsername } from "$lib/server/auth";
 import { dbRetryTx, t } from "$lib/server/db";
 import { generateId } from "$lib/server/db_utils";
 import { getUser } from "$lib/server/telefunc_util";
-import { and, eq, exists, or, sql } from "drizzle-orm";
+import { and, eq, or, sql } from "drizzle-orm";
 
 export async function onAddFriend(username: string) {
     const user = getUser();
@@ -24,19 +24,17 @@ export async function onAddFriend(username: string) {
         }
         const userId = userIds[0].id;
 
-        const qFriendExists = exists(
-            tx
-                .select({ id: sql`1` })
-                .from(t.friend)
-                .where(
-                    or(
-                        and(eq(t.friend.user1Id, userId), eq(t.friend.user2Id, user.id)),
-                        and(eq(t.friend.user1Id, user.id), eq(t.friend.user2Id, userId))
-                    )
+        const friendExists = await tx
+            .select({ id: sql`1` })
+            .from(t.friend)
+            .where(
+                or(
+                    and(eq(t.friend.user1Id, userId), eq(t.friend.user2Id, user.id)),
+                    and(eq(t.friend.user1Id, user.id), eq(t.friend.user2Id, userId))
                 )
-        );
-        const friendExists = (await tx.run(sql`SELECT ${qFriendExists}`)).rows[0][0];
-        if (friendExists) {
+            )
+            .limit(1);
+        if (friendExists.length > 0) {
             return { ok: false, message: "You are already friends with this user" } as const;
         }
 

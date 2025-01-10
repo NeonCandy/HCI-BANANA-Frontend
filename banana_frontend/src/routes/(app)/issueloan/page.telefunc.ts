@@ -9,12 +9,12 @@ export async function onGetGroupMembers(groupId: string) {
     const groupIdB = decodeId(groupId);
 
     const users = await dbRetryTx(async (tx) => {
-        const membershipExists = tx
+        const membershipExists = await tx
             .select({ id: sql`1` })
             .from(t.groupMember)
-            .where(and(eq(t.groupMember.groupId, groupIdB), eq(t.groupMember.userId, user.id)));
-        const isMember = (await tx.run(sql`SELECT ${membershipExists}`)).rows[0][0];
-        if (!isMember) {
+            .where(and(eq(t.groupMember.groupId, groupIdB), eq(t.groupMember.userId, user.id)))
+            .limit(1);
+        if (membershipExists.length == 0) {
             throw Abort({ invalidGroup: true });
         }
 
