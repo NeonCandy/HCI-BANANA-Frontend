@@ -63,7 +63,7 @@
         <div class="m-4">
             <Input type="search" placeholder="Search" bind:value={filter} />
         </div>
-        <ul class="m-4 my-2 flex flex-col">
+        <ul class="mx-4 mt-2 flex flex-col">
             {#each filteredFriends as friend (friend.id)}
                 <li class="group contents">
                     <button
@@ -76,6 +76,7 @@
                 </li>
             {/each}
         </ul>
+        <div class="h-16 my-2"></div>
     </ScrollArea>
 
     <Popup
@@ -91,10 +92,10 @@
             <Dialog.Trigger
                 class={[
                     buttonVariants(),
-                    "absolute -bottom-3 -right-3 !size-20 !rounded-full shadow-md"
+                    "absolute bottom-4 right-4 !size-12 !rounded-full shadow-md"
                 ]}
             >
-                <AppIcon icon={Plus} class="!size-10" />
+                <AppIcon icon={Plus} class="!size-6" />
             </Dialog.Trigger>
         {/snippet}
         <Dialog.Header>
