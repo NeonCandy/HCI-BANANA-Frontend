@@ -297,6 +297,6 @@
         type="submit"
         disabled={!canSubmit && !mutIssueLoan.applying}
     >
-        Fuck it
+        Issue Loan
     </Button>
 </form>
