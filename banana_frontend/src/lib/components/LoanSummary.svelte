@@ -68,7 +68,7 @@
                 class="size-6"
             />
             <p class="leading-none">
-                {formatMoney(signedValue, true, loanType == "byme" ? "+" : "-")}
+                {formatMoney(signedValue)}
             </p>
         </div>
     </div>

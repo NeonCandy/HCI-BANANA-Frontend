@@ -28,7 +28,7 @@
                 <p class="text-sm leading-none">{n} {typeString} loan{n > 1 ? "s" : ""}</p>
             </div>
             <p class="pb-[10px] pl-2 text-lg leading-none">
-                {formatMoney(value, true)}
+                {formatMoney(value)}
             </p>
         </div>
     {:else}
